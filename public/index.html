@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Display</title>
+    <style>
+      * {
+        font-size: 18px;
+      }
+        body {
+            font-family: Menlo, monospace;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 8px;
+            background: #222;
+            color: #f9faec;
+        }
+        .time-container {
+            margin: 8px 0;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h2 {  
+          margin: 0;
+        }
+        p{
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="time-container">
+        <h2>Server Time</h2>
+        <p>Time: <span id="server-time">Loading...</span></p>
+        <p>Timezone: <span id="server-timezone">Loading...</span></p>
+    </div>
+
+    <div class="time-container">
+        <h2>Client Time</h2>
+        <p>Time: <span id="client-time">Loading...</span></p>
+        <p>Timezone: <span id="client-timezone">Loading...</span></p>
+    </div>
+
+    <script>
+        // Update client time
+        function updateClientTime() {
+            const now = new Date();
+            document.getElementById('client-time').textContent = now.toLocaleString();
+            document.getElementById('client-timezone').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        }
+
+        // Fetch server time
+        async function updateServerTime() {
+            try {
+                const response = await fetch('/api/server-time');
+                const data = await response.json();
+                document.getElementById('server-time').textContent = data.time;
+                document.getElementById('server-timezone').textContent = data.timeZone;
+            } catch (error) {
+                console.error('Error fetching server time:', error);
+            }
+        }
+
+        // Update times immediately and then every second
+        updateClientTime();
+        updateServerTime();
+        setInterval(() => {
+            updateClientTime();
+            updateServerTime();
+        }, 1000);
+    </script>
+</body>
+</html> 
