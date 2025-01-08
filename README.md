@@ -13,11 +13,11 @@ const timeZone = process.env.TZ || 'UTC';
 For local dev, set the timezone before starting the server:
 
 ```bash
-export TZ=America/New_York npm start
+export TZ=America/Los_Angeles npm start
 ```
 
 To set the timezone on Heroku, use the following command:
 
 ```bash
-heroku config:set TZ=America/New_York
+heroku config:set TZ=America/Los_Angeles
 ```
