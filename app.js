@@ -11,10 +11,11 @@ app.use(express.static('public'));
 // API endpoint to get server time
 app.get('/api/server-time', (req, res) => {
     const serverTime = new Date();
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // Use process.env.TZ instead of relying on Intl.DateTimeFormat
+    const timeZone = process.env.TZ || 'UTC';
     
     res.json({
-        time: serverTime.toLocaleString(),
+        time: serverTime.toLocaleString('en-US', { timeZone: timeZone }),
         timeZone: timeZone
     });
 });
